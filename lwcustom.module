@@ -1,0 +1,22 @@
+function lwcustom_block_info() {
+    $blocks = array();
+    $blocks['lw_translations_toc'] = array(
+        'info' => t('LW translations TOC'),
+    );
+
+    return $blocks;
+}
+
+function lwcustom_block_view($delta='') {
+    $block = array();
+
+    switch($delta) {
+    case 'lw_translations_toc' :
+        $block['content'] = menu_tree_output(
+            menu_tree_all_data(book_menu_name($node_id))
+        );
+        break;
+    }
+
+    return $block;
+}
