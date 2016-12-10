@@ -1,3 +1,4 @@
+<?php
 function lwcustom_block_info() {
     $blocks = array();
     $blocks['lw_translations_toc'] = array(
@@ -10,11 +11,42 @@ function lwcustom_block_info() {
 function lwcustom_block_view($delta='') {
     $block = array();
 
+    $sequences_rfatz = array(
+        'Карта и территория' => 257,
+        'Как успешно менять свое мнение' => 258,
+    );
+
+    $sequences_standalone = array(
+        'Цепочка «Руководство по использованию слов для людей»' => 260,
+        'Цепочка «Редукционизм»' => 192,
+        'Цепочка «Бросая вызов сложностям»' => 111,
+        'Прочие материалы с lesswrong.com' => 261,
+        'Переводы с других ресурсов' => 262,
+    );
+
     switch($delta) {
     case 'lw_translations_toc' :
-        $block['content'] = menu_tree_output(
-            menu_tree_all_data(book_menu_name($node_id))
+        $block['content'] = array();
+
+        $block['content'][] = array(
+            '#type' => 'markup',
+            '#markup' => '<h1>Рациональность: от ИИ до зомби</h1>',
         );
+        foreach ($sequences_rfatz as $title => $node_id) {
+            $block['content'][] = menu_tree_output(
+                menu_tree_all_data(book_menu_name($node_id))
+            );
+        }
+        $block['content'][] = array(
+            '#type' => 'markup',
+            '#markup' => '<h1>Прочие материалы</h1>',
+        );
+        foreach ($sequences_standalone as $title => $node_id) {
+            $block['content'][] = menu_tree_output(
+                menu_tree_all_data(book_menu_name($node_id))
+            );
+        }
+
         break;
     }
 
