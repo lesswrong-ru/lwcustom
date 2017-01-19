@@ -24,13 +24,23 @@ function lwcustom_block_view($delta='') {
         'Переводы с других ресурсов' => 262,
     );
 
+    $rfatz_description = '"Рациональность: от ИИ до зомби" (англ. Rationality: From AI to Zombies) — это сборник из шести электронных книг, содержащих целый ряд эссе о науке и философии человеческой рациональности. Это одно из лучших мест, с которых можно начинать людям, желающим лучше разобраться в темах, часто обсуждаемых на LessWrong, таких, как когнитивные искажения, соотношение "карты" и "территории", метаэтика и экзистенциальные риски.
+Полный перевод книги пока не завершен, здесь вы можете прочитать уже переведенные части.';
+
     switch($delta) {
     case 'lw_translations_toc' :
         $block['content'] = array();
 
+
         $block['content'][] = array(
-            '#type' => 'markup',
-            '#markup' => '<h1>Рациональность: от ИИ до зомби</h1>',
+            array(
+                '#type' => 'markup',
+                '#markup' => '<h1>Рациональность: от ИИ до зомби</h1>',
+            ),
+            array(
+                '#type' => 'markup',
+                '#markup' => check_markup($rfatz_description, 'wikitypetext'),
+            ),
         );
         foreach ($sequences_rfatz as $title => $node_id) {
             $block['content'][] = menu_tree_output(
