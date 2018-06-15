@@ -34,11 +34,7 @@ function lwcustom_block_view($delta='') {
         $tree_id = key($tree);
         $inner_tree = $tree[$tree_id];
 
-        $below = $inner_tree['#below'];
-        reset($below);
-        $first_key = key($below);
-        $prepend_key = $first_key - 1;
-        $below[$prepend_key] = $description;
+        $inner_tree['#below'] = [0 => $description] + $inner_tree['#below'];
 
         $block['content'][] = $tree;
       }
