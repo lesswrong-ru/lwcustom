@@ -32,7 +32,7 @@ function lwcustom_block_view($delta='') {
         $tree = menu_tree_output(menu_tree_all_data(book_menu_name($book_id)));
         reset($tree);
         $tree_id = key($tree);
-        $inner_tree = $tree[$tree_id];
+        $inner_tree = &$tree[$tree_id];
 
         $inner_tree['#below'] = [0 => $description] + $inner_tree['#below'];
 
