@@ -29,17 +29,16 @@ function lwcustom_block_view($delta='') {
           '#markup' => check_markup($book_node->body['und'][0]['value'], 'wikitypetext'),
         ];
 
-        $tree = menu_tree_output(
-          menu_tree_all_data(book_menu_name($book_id))
-        );
+        $tree = menu_tree_output(menu_tree_all_data(book_menu_name($book_id)));
         reset($tree);
         $tree_id = key($tree);
         $inner_tree = $tree[$tree_id];
 
-        reset($inner_tree['#below']);
-        $first_key = key($inner_tree['#below']);
+        $below = $inner_tree['#below'];
+        reset($below);
+        $first_key = key($below);
         $prepend_key = $first_key - 1;
-        $inner_tree['#below'][$first_key] = $description;
+        $below[$prepend_key] = $description;
 
         $block['content'][] = $tree;
       }
