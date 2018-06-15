@@ -1,67 +1,45 @@
 <?php
 function lwcustom_block_info() {
-    $blocks = array();
-    $blocks['lw_translations_toc'] = array(
-        'info' => t('LW translations TOC'),
-    );
+  $blocks = [];
+  $blocks['lw_translations_toc'] = [
+    'info' => t('LW translations TOC'),
+  ];
 
-    return $blocks;
+  return $blocks;
 }
 
 function lwcustom_block_view($delta='') {
-    $block = array();
+  $block = [];
 
-    $sequences_rfatz = array(
-        'Карта и территория' => 257,
-        'Как успешно менять свое мнение' => 258,
-    );
+  $books = [
+    285,
+    371,
+    382,
+  ];
 
-    $sequences_standalone = array(
-        'Цепочка «Руководство по использованию слов для людей»' => 260,
-        'Цепочка «Редукционизм»' => 192,
-        'Цепочка «Бросая вызов сложностям»' => 111,
-        'Прочие материалы с lesswrong.com' => 261,
-        'Переводы с других ресурсов' => 262,
-    );
-
-    $rfatz_description = '«Рациональность: от ИИ до зомби» (англ. [Rationality: From AI to Zombies](https://wiki.lesswrong.com/wiki/Rationality:_From_AI_to_Zombies)) — книга-сборник из 333 эссе о человеческой рациональности. Стоит начать с этой книги, если хотите разобраться в темах, которые часто обсуждают в сообществе LessWrong. Вы прочтете о когнитивных искажениях, соотношении «карты» и «территории», обществе и языке, о рисках искусственного интеллекта, о науке и её философии.
-
-Перевод пока не завершён, здесь лежат уже переведенные главы.
-
-_[(Скачать эту книгу в epub/fb2)](/Электронные_книги)_';
-
-    switch($delta) {
+  switch ($delta) {
     case 'lw_translations_toc' :
-        $block['content'] = array();
+      $block['content'] = [];
 
-
-        $block['content'][] = array(
-            array(
-                '#type' => 'markup',
-                '#markup' => '<h1>Рациональность: от ИИ до зомби</h1>',
-            ),
-            array(
-                '#type' => 'markup',
-                '#markup' => check_markup($rfatz_description, 'wikitypetext'),
-            ),
-        );
-        foreach ($sequences_rfatz as $title => $node_id) {
-            $block['content'][] = menu_tree_output(
-                menu_tree_all_data(book_menu_name($node_id))
-            );
-        }
-        $block['content'][] = array(
+      foreach ($books as $book_id) {
+        $book_node = node_load($book_id);
+        $block['content'][] = [
+          [
             '#type' => 'markup',
-            '#markup' => '<h1>Прочие материалы</h1>',
+            '#markup' => check_markup('# ' + $book_node->title, 'wikitypetext'),
+          ],
+          [
+            '#type' => 'markup',
+            '#markup' => check_markup($book_node->body, 'wikitypetext'),
+          ],
+        ];
+        $block['content'][] = menu_tree_output(
+          menu_tree_all_data(book_menu_name($book_id))
         );
-        foreach ($sequences_standalone as $title => $node_id) {
-            $block['content'][] = menu_tree_output(
-                menu_tree_all_data(book_menu_name($node_id))
-            );
-        }
+      }
 
-        break;
-    }
+      break;
+  }
 
-    return $block;
+  return $block;
 }
