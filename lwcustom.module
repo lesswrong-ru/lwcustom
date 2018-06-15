@@ -24,17 +24,19 @@ function lwcustom_block_view($delta='') {
       foreach ($books as $book_id) {
         $book_node = node_load($book_id);
 
-        $description = [
-          '#type' => 'markup',
-          '#markup' => check_markup($book_node->body['und'][0]['value'], 'wikitypetext'),
-        ];
-
         $tree = menu_tree_output(menu_tree_all_data(book_menu_name($book_id)));
-        reset($tree);
-        $tree_id = key($tree);
-        $inner_tree = &$tree[$tree_id];
+        if ($book_node->body) {
+          $description = [
+            '#type' => 'markup',
+            '#markup' => check_markup($book_node->body['und'][0]['value'], 'wikitypetext'),
+          ];
 
-        $inner_tree['#below'] = [0 => $description] + $inner_tree['#below'];
+          reset($tree);
+          $tree_id = key($tree);
+          $inner_tree = &$tree[$tree_id];
+
+          $inner_tree['#below'] = [0 => $description] + $inner_tree['#below'];
+        }
 
         $block['content'][] = $tree;
       }
