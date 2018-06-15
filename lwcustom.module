@@ -18,7 +18,7 @@ function lwcustom_block_view($delta='') {
   ];
 
   switch ($delta) {
-    case 'lw_translations_toc' :
+    case 'lw_translations_toc':
       $block['content'] = [];
 
       foreach ($books as $book_id) {
@@ -26,11 +26,11 @@ function lwcustom_block_view($delta='') {
         $block['content'][] = [
           [
             '#type' => 'markup',
-            '#markup' => check_markup('# ' + $book_node->title, 'wikitypetext'),
+            '#markup' => check_markup('# ' . $book_node->title, 'wikitypetext'),
           ],
           [
             '#type' => 'markup',
-            '#markup' => check_markup($book_node->body, 'wikitypetext'),
+            '#markup' => check_markup($book_node->body['und'][0]['value'], 'wikitypetext'),
           ],
         ];
         $block['content'][] = menu_tree_output(
